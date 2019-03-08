@@ -1,0 +1,55 @@
+
+h2 Product BOM Editor  {{status}}
+md-content
+    md-nav-bar
+        md-nav-item(md-nav-click="goto('loading')") Loading
+        md-nav-item(md-nav-click="goto('rate')") Rates
+        md-nav-item(md-nav-click="goto('usage')") Yields
+        md-nav-item(md-nav-click="goto('cost')") Cost
+        md-nav-item(md-nav-click="goto('hours')") Hours
+        md-nav-item(md-nav-click="goto('demand')") Demand
+div(layout="row")
+    .virtualRepeatdemoScrollTo()
+        div.wrapper()
+            h2 {{activeRoute.Name}} Demand
+            md-input-container()
+                md-select(ng-model='selectedYear', aria-label='Select a Year')
+                    md-option(ng-value='$index', ng-repeat='year in years') {{ year }}
+            section(layout="row")
+                md-button.md-primary(ng-click='copyForward(4, activeRoute, "demand")') Copy Forward 4
+                md-button.md-primary(ng-click='copyForward(12, activeRoute, "demand")') Copy Forward Year
+                md-button.md-primary(ng-click='copyForward(60, activeRoute, "demand")') Copy Forward All
+            md-virtual-repeat-container#vertical-container(md-top-index='topIndex' layout-align="center center")
+                .repeated-item(layout='row' md-virtual-repeat='item in items', ng-class='{header: item.header}')
+                    p.no-margin(flex='40' style='vertical-align: middle') {{item.text}} {{item.header}} {{$index}}
+                    span(flex='20')
+                    md-input-container.md-block(flex-gt-xs id='no-margin' ng-if='item.header != true' flex='40')
+                        input(ng-model='activeRoute.Demand[$index].amount' ng-keyup="getKeys($event, $index)" ng-placeholder = 'activeRoute.Demand[$index].amount' aria-label = "Input Demand")
+    .virtualRepeatdemoScrollTo(ng-repeat='wc in activeRoute.UsedWorkCenters')
+        div.wrapper
+            h2 {{wc.WorkCenterID.Name}} {{status}}
+            md-input-container
+                md-select(ng-model='selectedYear', aria-label='Select a Year')
+                    md-option(ng-value='$index', ng-repeat='year in years') {{ year }}
+            section(layout="row")
+                md-button.md-primary(ng-click='copyForward(4, wc.WorkCenterInformation, status)') Copy Forward 4
+                md-button.md-primary(ng-click='copyForward(12, wc.WorkCenterInformation, status)') Copy Forward Year
+                md-button.md-primary(ng-click='copyForward(60, wc.WorkCenterInformation, status)') Copy Forward All
+            md-virtual-repeat-container#vertical-container(md-top-index='topIndex' layout-align="center center")
+                .repeated-item(layout='row' md-virtual-repeat='item in items', ng-class='{header: item.header}')
+                    p.no-margin(flex='40' style='vertical-align: middle') {{item.text}} {{item.header}} {{$index}}
+                    span(flex='20')
+                    md-input-container.md-block(flex-gt-xs id='no-margin' ng-if="item.header != true" flex='40')
+                        input(ng-model='wc.WorkCenterInformation[$index][status]' ng-keyup="getKeys($event, $index)" ng-placeholder = 'wc.WorkCenterInformation[$index][status]' aria-label = "Workcenter Informatoin")
+                   
+
+//- .virtualRepeatdemoScrollTo()
+//-     div.wrapper
+//-         md-input-container
+//-         md-select(ng-model='selectedYear', aria-label='Select a Year')
+//-             md-option(ng-value='$index', ng-repeat='year in years') {{ year }}
+//-         md-virtual-repeat-container#vertical-container(md-top-index='topIndex')
+//-             .repeated-item(layout='row' md-virtual-repeat='item in activeRoute.Demand')
+//-                 p.no-margin(flex='40' style='vertical-align: middle') {{item.period}}
+//-                 span(flex='20')
+//-                 p.no-margin(flex='40' style='vericlal-align: middle') {{item.amount}}
